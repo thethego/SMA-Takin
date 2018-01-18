@@ -79,9 +79,9 @@ public class Agent implements Runnable{
                 //verification si la place est disponible et decision
                 decision = this.position;
                 for (Point p: positionsSuivantes){
-                    if(!p.equals(this.previousPosition)){
+                    if(!p.equals(this.previousPosition) && grid.isInside(p)){
                         Agent agent = grid.isAgent(p);
-                        if(agent == null && grid.isInside(p)) {
+                        if(agent == null) {
                             decision = p;
                         } else {
                             askMove(agent,p);
