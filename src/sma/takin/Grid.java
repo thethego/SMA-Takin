@@ -7,6 +7,7 @@ package sma.takin;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -66,11 +67,7 @@ class Grid {
             return false;
         }
         
-        if (!agents.stream().noneMatch((a) -> (a.getPosition().equals(position)))) {
-            return false;
-        }
-                
-        return true;
+        return agents.stream().noneMatch((a) -> (a.getPosition().equals(position)));
     }
     
     public Agent isAgent(Point position){
