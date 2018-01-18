@@ -48,7 +48,7 @@ public class Agent implements Runnable{
     @Override
     public void run() {
         while(true){
-            Point decision = null;
+            Point decision = this.position;
             
             //traitement des messages (v2)
             if(this.messages.size() > 0){
@@ -56,13 +56,14 @@ public class Agent implements Runnable{
                 if(message.getType() == MessageType.Move){
                     if(message.getPosition().equals(this.getPosition())) {
                         decision = message.getPosition();
+                        messages.removeFirst();
                     }
                 }
             }
 
             //choix de la direction
             //calcul des distances
-            if(!this.objective.equals(this.position) && decision == null) {
+            if(!this.objective.equals(this.position) && decision == this.position) {
                 ArrayList<Point> positionsSuivantes = new ArrayList<>();
                 positionsSuivantes.add(new Point(position.x, position.y+1));
                 positionsSuivantes.add(new Point(position.x, position.y-1));
@@ -79,8 +80,12 @@ public class Agent implements Runnable{
                 //verification si la place est disponible et decision
                 decision = this.position;
                 for (Point p: positionsSuivantes){
-                    if(grid.isFree(p) && !p.equals(this.previousPosition)){
-                        decision = p;
+                    if(!p.equals(this.previousPosition)){
+                        if(grid.isFree(p)) {
+                            decision = p;
+                        } else {
+                            askMove(grid.isAgent(p),p);
+                        }
                         break;
                     }
                 }

@@ -36,8 +36,11 @@ class Grid {
     }
 
     public void run(){
+        ArrayList<Thread> threads = new ArrayList();
         agents.forEach((agent) -> {
-            new Thread(agent).start();
+            Thread thread = new Thread(agent);
+            threads.add(thread);
+            thread.start();
         });
         while(!this.allOK()){
             System.out.println(this.toString());
@@ -47,10 +50,12 @@ class Grid {
                 Logger.getLogger(Grid.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        threads.forEach((thread) -> {
+            thread.stop();
+        });
     }
     
     public boolean isFree(Point position){
-        
         if(position.x >= xMax){
             return false;
         }
