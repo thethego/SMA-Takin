@@ -8,11 +8,8 @@ package sma.takin;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -47,23 +44,25 @@ public class Agent implements Runnable{
     
     @Override
     public void run() {
-        while(true){
+        Boolean stop = false;
+        while(!stop){
             Point decision = this.position;
+            Boolean move = false;
             
             //traitement des messages (v2)
             if(this.messages.size() > 0){
                 Message message = messages.getFirst();
                 if(message.getType() == MessageType.Move){
                     if(message.getPosition().equals(this.getPosition())) {
-                        decision = message.getPosition();
-                        messages.removeFirst();
+                        move = true;
                     }
                 }
+                messages.removeFirst();
             }
 
             //choix de la direction
             //calcul des distances
-            if(!this.objective.equals(this.position) && decision == this.position) {
+            if(!this.objective.equals(this.position) || move) {
                 ArrayList<Point> positionsSuivantes = new ArrayList<>();
                 positionsSuivantes.add(new Point(position.x, position.y+1));
                 positionsSuivantes.add(new Point(position.x, position.y-1));
@@ -81,10 +80,11 @@ public class Agent implements Runnable{
                 decision = this.position;
                 for (Point p: positionsSuivantes){
                     if(!p.equals(this.previousPosition)){
-                        if(grid.isFree(p)) {
+                        Agent agent = grid.isAgent(p);
+                        if(agent == null && grid.isInside(p)) {
                             decision = p;
                         } else {
-                            askMove(grid.isAgent(p),p);
+                            askMove(agent,p);
                         }
                         break;
                     }
@@ -98,7 +98,8 @@ public class Agent implements Runnable{
             try {
                 Thread.sleep(500);
             } catch (InterruptedException ex) {
-                Logger.getLogger(Agent.class.getName()).log(Level.SEVERE, null, ex);
+                Thread.currentThread().interrupt();
+                stop = true;
             }
         }
         

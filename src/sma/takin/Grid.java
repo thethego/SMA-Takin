@@ -7,7 +7,6 @@ package sma.takin;
 
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -51,37 +50,20 @@ class Grid {
             }
         }
         threads.forEach((thread) -> {
-            thread.stop();
+            thread.interrupt();
         });
     }
     
     public boolean isFree(Point position){
-        if(position.x >= xMax){
+        if(!isInside(position)){
             return false;
         }
-        
-        if(position.y >= yMax){
-            return false;
-        }
-        
-         if(position.x < 0){
-            return false;
-        }
-        
-        if(position.y<0){
-            return false;
-        }
-        
         return agents.stream().noneMatch((a) -> (a.getPosition().equals(position)));
     }
     
     public Agent isAgent(Point position){
         
-        if(position.x >= xMax){
-            return null;
-        }
-        
-        if(position.y >= yMax){
+        if(!isInside(position)){
             return null;
         }
         
@@ -92,6 +74,10 @@ class Grid {
         }
                 
         return null;
+    }
+    
+    public boolean isInside(Point position) {
+        return !(position.x >= xMax || position.y >= yMax || position.x < 0 || position.y<0);
     }
     
     public boolean isFreeObjective(Point position){
