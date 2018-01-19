@@ -11,9 +11,9 @@ package sma.takin;
  */
 public class Main {
     
-    private static final int nbAgents = 18;
-    private static final int NbRow = 7;
-    private static final int nbCol = 7;
+    private static final int nbAgents = 21;
+    private static final int NbRow = 5;
+    private static final int nbCol = 5;
 
     /**
      * @param args the command line arguments

@@ -61,6 +61,7 @@ public class View  implements Observer {
 
         @Override
         public void invalidate() {
+            cells.clear();
             super.invalidate();
         }
 

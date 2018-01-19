@@ -61,6 +61,8 @@ public class Agent extends Observable implements Runnable{
                 positionsSuivantes.add(new Point(position.x+1, position.y));
             if(position.x > 0)
                 positionsSuivantes.add(new Point(position.x-1, position.y));
+            //Shuffle arraylist to avoid infinite loop;
+            Collections.shuffle(positionsSuivantes);
             
             //traitement des messages
             if(this.messages.size() > 0){
@@ -74,6 +76,11 @@ public class Agent extends Observable implements Runnable{
                                 previousPosition = null;
                                 break;
                             }
+                        }
+                        if(this.objective.equals(this.position) && !move){
+                            Agent agent = grid.isAgent(positionsSuivantes.get(0));
+                            if(agent != null)
+                                askMove(agent,positionsSuivantes.get(0));
                         }
                     }
                 }
@@ -110,7 +117,7 @@ public class Agent extends Observable implements Runnable{
             notifyObservers();
             
             try {
-                Thread.sleep(500);
+                Thread.sleep(0);
             } catch (InterruptedException ex) {
                 Thread.currentThread().interrupt();
                 stop = true;
