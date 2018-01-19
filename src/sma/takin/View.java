@@ -81,7 +81,7 @@ public class View  implements Observer {
             
             Agent agent = null;
             int fontSizeObjective = 20;
-            int fontSizePos = 50;
+            int fontSizePos = 40;
             Font fontObjective = new Font("TimesRoman", Font.PLAIN, fontSizeObjective);
             Font fontPos = new Font("TimesRoman", Font.PLAIN, fontSizePos);
                      
@@ -109,11 +109,12 @@ public class View  implements Observer {
                     g.setFont(fontPos);
                     agent = grid.isAgent(position);
                     if(agent != null) {
+                        int strWidth = g.getFontMetrics().stringWidth(agent.getIdent());
                         if(grid.allOK())
                             g.setColor(Color.GREEN);
                         else
                             g.setColor(Color.BLACK);
-                        g.drawString(agent.getIdent(), x+(cellWidth/2)-10, y+(cellHeight/2)+20);
+                        g.drawString(agent.getIdent(), x+(cellWidth/2)-(strWidth/2), y+(cellHeight/2)+20);
                     }
                 }
             }
