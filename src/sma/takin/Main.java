@@ -10,12 +10,21 @@ package sma.takin;
  * @author Epulapp
  */
 public class Main {
+    
+    private static final int nbAgents = 18;
+    private static final int NbRow = 7;
+    private static final int nbCol = 7;
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        Grid grid = new Grid(4,5,5);
+        Grid grid = new Grid(nbAgents,nbCol,NbRow);
+        View v = new View(grid);
+        grid.getAgents().forEach((agent) -> {
+            agent.addObserver(v);
+        });
+        System.out.print(grid.toString());
         grid.run();
     }
     

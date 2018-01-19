@@ -23,7 +23,10 @@ class Grid {
     
     public Grid(int nbAgent, int xMax, int yMax){
         //init grid
-        Grid grid = this;
+        if(nbAgent > xMax * yMax) {
+            System.err.println("err : too many agents -> nbAgent > xMax * yMax");
+            System.exit(1);
+        }
         this.xMax = xMax;
         this.yMax = yMax;
         agents = new ArrayList();
@@ -41,8 +44,8 @@ class Grid {
             threads.add(thread);
             thread.start();
         });
-        while(!this.allOK()){
-            System.out.println(this.toString());
+        /*while(!this.allOK()){
+            //System.out.println(this.toString());
             try {
                 Thread.sleep(500);
             } catch (InterruptedException ex) {
@@ -51,7 +54,7 @@ class Grid {
         }
         threads.forEach((thread) -> {
             thread.interrupt();
-        });
+        });*/
     }
     
     public boolean isFree(Point position){
@@ -62,17 +65,26 @@ class Grid {
     }
     
     public Agent isAgent(Point position){
-        
         if(!isInside(position)){
             return null;
         }
-        
         for(Agent a:agents){
             if(a.getPosition().equals(position)){
                 return a;
             }
         }
-                
+        return null;
+    }
+    
+    public Agent isAgentObjective(Point position){
+        if(!isInside(position)){
+            return null;
+        }
+        for(Agent a:agents){
+            if(a.getObjective().equals(position)){
+                return a;
+            }
+        }
         return null;
     }
     
@@ -81,11 +93,7 @@ class Grid {
     }
     
     public boolean isFreeObjective(Point position){
-            if(position.x >= xMax){
-            return false;
-        }
-        
-        if(position.y >= yMax){
+        if(!isInside(position)){
             return false;
         }
         
@@ -104,14 +112,17 @@ class Grid {
         
         StringBuilder sb = new StringBuilder();
         
-        agents.stream().map((a) -> {
-            sb.append(a.getIdent()).append(":").append(a.getObjective().toString());
-            return a;
-        }).forEachOrdered((_item) -> {
-            sb.append("\n");
-        });
-        
         for(int i = 0 ; i < xMax; i++){
+            for (int j = 0 ; j < yMax; j++){
+                Agent a = isAgentObjective(new Point (i,j));
+                if(a!=null){
+                    sb.append("[").append(a.getIdent()).append("]");
+                    
+                }else{
+                    sb.append("[ ]");
+                }
+            }
+            sb.append(" | ");
             for (int j = 0 ; j < yMax; j++){
                 Agent a = isAgent(new Point (i,j));
                 if(a!=null){
@@ -127,10 +138,14 @@ class Grid {
         
         return sb.toString();
     }
-    
         
     public Boolean allOK(){
         return agents.stream().noneMatch((agent) -> (!agent.getPosition().equals(agent.getObjective())));
     }
+
+    public ArrayList<Agent> getAgents() {
+        return agents;
+    }
+    
     
 }
