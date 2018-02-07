@@ -112,9 +112,9 @@ class Grid {
         
         StringBuilder sb = new StringBuilder();
         
-        for(int i = 0 ; i < xMax; i++){
-            for (int j = 0 ; j < yMax; j++){
-                Agent a = isAgentObjective(new Point (i,j));
+        for(int i = 0 ; i < yMax; i++){
+            for (int j = 0 ; j < xMax; j++){
+                Agent a = isAgentObjective(new Point (j,i));
                 if(a!=null){
                     sb.append("[").append(a.getIdent()).append("]");
                     
@@ -123,8 +123,8 @@ class Grid {
                 }
             }
             sb.append(" | ");
-            for (int j = 0 ; j < yMax; j++){
-                Agent a = isAgent(new Point (i,j));
+            for (int j = 0 ; j < xMax; j++){
+                Agent a = isAgent(new Point (j,i));
                 if(a!=null){
                     sb.append("[").append(a.getIdent()).append("]");
                     

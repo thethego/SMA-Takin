@@ -82,7 +82,7 @@ public class View  implements Observer {
                      
             for (int row = 0; row < rowCount; row++) {
                 for (int col = 0; col < columnCount; col++) {
-                    Point position = new Point(row,col);
+                    Point position = new Point(col,row);
                     int x = xOffset + (col * cellWidth);
                     int y = yOffset + (row * cellHeight);
                     Rectangle cell = new Rectangle(

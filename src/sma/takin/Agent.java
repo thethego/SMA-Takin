@@ -117,7 +117,7 @@ public class Agent extends Observable implements Runnable{
             notifyObservers();
             
             try {
-                Thread.sleep(0);
+                Thread.sleep(5);
             } catch (InterruptedException ex) {
                 Thread.currentThread().interrupt();
                 stop = true;

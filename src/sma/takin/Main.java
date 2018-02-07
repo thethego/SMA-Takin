@@ -11,15 +11,15 @@ package sma.takin;
  */
 public class Main {
     
-    private static final int nbAgents = 21;
-    private static final int NbRow = 5;
-    private static final int nbCol = 5;
+    private static final int nbAgents = 90;
+    private static final int NbRow = 10;
+    private static final int nbCol = 10;
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        Grid grid = new Grid(nbAgents,nbCol,NbRow);
+        Grid grid = new Grid(nbAgents,NbRow,nbCol);
         View v = new View(grid);
         grid.getAgents().forEach((agent) -> {
             agent.addObserver(v);
